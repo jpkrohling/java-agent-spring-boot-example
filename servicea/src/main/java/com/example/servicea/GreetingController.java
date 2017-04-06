@@ -16,25 +16,20 @@
  */
 package com.example.servicea;
 
-import java.util.Collections;
 import java.util.concurrent.atomic.AtomicLong;
 
-import org.hawkular.apm.client.opentracing.APMTracer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-import io.opentracing.Tracer;
-import io.opentracing.contrib.spring.web.client.TracingRestTemplateInterceptor;
-
 
 @RestController
 public class GreetingController {
 
-    @Autowired(required = false)
-    private Tracer tracer;
+    @Autowired
+    private RestTemplate restTemplate;
 
     private static final String ADDR = "http://localhost:8090/message";
 
@@ -42,9 +37,6 @@ public class GreetingController {
 
     @RequestMapping("/greeting")
     public Greeting greeting(@RequestParam(value = "name", defaultValue = "World") String name) {
-        RestTemplate restTemplate = new RestTemplate();
-        restTemplate.setInterceptors(Collections.singletonList(new TracingRestTemplateInterceptor(tracer)));
-
         String message = restTemplate.getForObject(ADDR, String.class);
         return new Greeting(counter.incrementAndGet(),
                 String.format(message, name));

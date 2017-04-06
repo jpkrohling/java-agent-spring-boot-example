@@ -19,12 +19,19 @@ package com.example.servicea;
 import org.hawkular.apm.client.opentracing.APMTracer;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
+import org.springframework.web.client.RestTemplate;
 
 import io.opentracing.Tracer;
 
 @SpringBootApplication
 public class RestApplication {
+
+	@Bean
+	public RestTemplate restTemplate(RestTemplateBuilder builder) {
+		return builder.build();
+	}
 
 	@Bean
 	public Tracer getTracer() {
