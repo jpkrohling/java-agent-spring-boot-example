@@ -16,11 +16,20 @@
  */
 package com.example.serviceb;
 
+import org.hawkular.apm.client.opentracing.APMTracer;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+
+import io.opentracing.Tracer;
 
 @SpringBootApplication
 public class RestApplication {
+
+	@Bean
+	public Tracer getTracer() {
+		return new APMTracer();
+	}
 
 	public static void main(String[] args) {
 		SpringApplication.run(RestApplication.class, args);
